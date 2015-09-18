@@ -1,10 +1,10 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-hostname = 'wpvagrant'
+hostname = 'gruntautomationforwp'
 ipnumber = '192.168.50.33'
-devdns   = 'www.wpvagrant.local'
-testdns  = 'test.wpvagrant.local'
+devdns   = 'www.gruntautomationforwp.local'
+testdns  = 'test.gruntautomationforwp.local'
 
 dir = Dir.pwd
 vagrant_dir = File.expand_path(File.dirname(__FILE__)) + "/vagrant"

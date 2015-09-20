@@ -8,11 +8,8 @@ module.exports = function(grunt) {
 	
 	grunt.registerTask('default', 'Log some stuff.', function() {
 		ls = getLocalsettings();
-		devdns = process.env.DEVDNS;
-		grunt.log.write('Hear hear, we are up... DNS name for this machine:' + devdns).ok();
+		grunt.log.write('localsettings successfully read URL=' + ls.url).ok();
 	});
-
-
 
 	/*
 	* Installing WP
@@ -32,22 +29,30 @@ module.exports = function(grunt) {
 		}
 	});
 
+	/*
+	* Setting up WP
+	* 
+	*/
+	grunt.registerTask('wp-setup', '', function() {
+		ls = getLocalsettings();
+		wpcmd = 'wp --path=' + ls.wppath + ' --allow-root ';
+		
+		// some standard plugins
+		stdplugins = ['if-menu', 'baw-login-logout-menu','google-analyticator'];
+		for(i=0;i<stdplugins.length;i++) {
+			name = stdplugins[i];		
+			shell.exec(wpcmd + 'plugin install --activate ' + name);
+		}
+		
+		//shell.exec(wpcmd + 'option update blogname "Another title"');
+		//shell.exec(wpcmd + 'option update blogdescription "experimental tagline"');
+
+	})
+
 
 	function getLocalsettings(test) {
-		var testMode = grunt.option('test');
-		if(test == true) {
-			testMode = true;
-		}
 		ls = grunt.file.readJSON('localsettings.json');
 		if(ls.wppath === undefined) ls.wppath = shell.pwd() + '/www/wordpress-default';
-		if(testMode == true) {
-			ls.environment = 'test';
-			ls.wppath = ls.wppath_test;
-			ls.dbname = ls.dbname_test;
-			ls.url = ls.url_test;
-		}
 		return ls;
 	}
-
-
 };
